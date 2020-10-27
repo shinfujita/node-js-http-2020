@@ -2,9 +2,8 @@
 const http = require('http');
 const pug = require('pug');
 const server = http.createServer((req, res) => {
-  const now = new Date();
   console.info(
-    '[' + now + '] Requested by ' + req.connection.remoteAddress
+    'Requested by ' + req.connection.remoteAddress
   );
   res.writeHead(200, {
     'Content-Type': 'text/html; charset=utf-8'
@@ -55,15 +54,15 @@ const server = http.createServer((req, res) => {
       break;
   }
   }).on('error', e => {
-    console.error('[' + now + '] Server Error', e);
+    console.error('Server Error', e);
   })
   .on('clientError', e => {
-    console.error('[' + now + '] Client Error', e);
+    console.error('Client Error', e);
   });
 const port = process.env.PORT || 8000;
 let key = process.env.NODE_ENV;
 console.log(key);
 
 server.listen(port, () => {
-  console.info('[' + new Date() + '] Listening on ' + port);
+  console.info('Listening on ' + port);
 });
