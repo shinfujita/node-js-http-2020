@@ -10,6 +10,15 @@ const basic = auth.basic(
   });
 const server = http.createServer(basic, (req, res) => {
   console.info('Requested by ' + req.connection.remoteAddress + ' desu1');
+
+  if (req.url === '/logout') {
+    res.writeHead(401, {
+      'Content-Type': 'text/plain; charset=UTF-8'
+    });
+    res.end('ログアウトしました');
+    return;
+  }
+  
   res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
 
   console.info('受け取ったメソッドは' + req.method + 'です。')
@@ -62,7 +71,12 @@ const server = http.createServer(basic, (req, res) => {
   .on('clientError', e => {
     console.error('Client Error', e);
   });
+
+// process.envはNode.jsの環境変数を格納しているオブジェクト
+// この記述で環境変数に設定されているポートの値を取得している。
+// 特に設定がなければ8000番のポートを使用する
 const port = process.env.PORT || 8000;
+// 以下で環境変数の中身を変数 key に格納して中身を確認
 let key = process.env.NODE_ENV;
 console.info(key + ' desu2');
 
