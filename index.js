@@ -1,13 +1,16 @@
 'use strict';
 const http = require('http');
 const pug = require('pug');
-const server = http.createServer((req, res) => {
-  console.info(
-    'Requested by ' + req.connection.remoteAddress
-  );
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8'
+// const server = http.createServer((req, res) => {
+const auth = require('http-auth');
+const basic = auth.basic(
+  { realm: 'Enquetes Area.' },
+  (username, password, callback) => {
+    callback(username === 'guest' && password === 'xaXZJQmE');
   });
+const server = http.createServer(basic, (req, res) => {
+  console.info('Requested by ' + req.connection.remoteAddress + ' desu1');
+  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
 
   console.info('受け取ったメソッドは' + req.method + 'です。')
   
@@ -53,7 +56,7 @@ const server = http.createServer((req, res) => {
     default:
       break;
   }
-  }).on('error', e => {
+}).on('error', e => {
     console.error('Server Error', e);
   })
   .on('clientError', e => {
@@ -61,7 +64,7 @@ const server = http.createServer((req, res) => {
   });
 const port = process.env.PORT || 8000;
 let key = process.env.NODE_ENV;
-console.log(key);
+console.info(key + ' desu2');
 
 server.listen(port, () => {
   console.info('Listening on ' + port);
